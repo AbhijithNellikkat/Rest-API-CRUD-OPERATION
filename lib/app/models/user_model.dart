@@ -1,33 +1,42 @@
+// To parse this JSON data, do
+//
+//     final userModel = userModelFromJson(jsonString);
+
+import 'dart:convert';
+
+List<UserModel> userModelFromJson(String str) => List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
+
+String userModelToJson(List<UserModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class UserModel {
-  // step 1 : create data types variables
-  String? name, phoneNumber, email;
-  int? id;
+    DateTime ?  createdAt;
+    String ? name;
+    String  ? phoneNumber;
+    String  ? email;
+    String ?  id;
 
-  // step 2 : create a constructor
-  UserModel({
-    this.email,
-    this.id,
-    this.name,
-    this.phoneNumber,
-  });
+    UserModel({
+        this.createdAt,
+        this.name,
+        this.phoneNumber,
+        this.email,
+        this.id,
+    });
 
-  // step 3 : create fromJson method
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      email: json["email"],
-      id: json["id"],
-      name: json["name"],
-      phoneNumber: json["phoneNumber"],
+    factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        createdAt: DateTime.parse(json["createdAt"]),
+        name: json["name"],
+        phoneNumber: json["phoneNumber"],
+        email: json["email"],
+        id: json["id"],
     );
-  }
 
-  // step 4 : create toJson method
-  Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "email": email,
-      "phoneNumber": phoneNumber,
-      "id": id,
+    Map<String, dynamic> toJson() => {
+        "createdAt": createdAt!.toIso8601String(),
+        "name": name,
+        "phoneNumber": phoneNumber,
+        "email": email,
+        "id": id,
     };
-  }
 }
+
