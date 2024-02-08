@@ -14,33 +14,54 @@ class UserController extends ChangeNotifier {
 
   bool postLoading = true;
 
-  Future<void> addUser() async {
-    Uri url = Uri.parse("https://65c33f3039055e7482c06b43.mockapi.io/users");
+  // Future<void> addUser() async {
+  //   Uri url = Uri.parse("https://65c33f3039055e7482c06b43.mockapi.io/users");
 
-    final userData = UserModel(
-      email: emailController.text,
-      name: nameController.text,
-      phoneNumber: phoneNumberController.text,
-    );
+  //   final userData = UserModel(
+  //     email: emailController.text,
+  //     name: nameController.text,
+  //     phoneNumber: phoneNumberController.text,
+  //   );
+
+  //   try {
+  //     var response = await http.post(
+  //       url,
+  //       body: jsonEncode(userData.toJson()),
+  //       headers: {"content-type": "application/json"},
+  //     );
+  //     emailController.clear();
+  //     nameController.clear();
+  //     phoneNumberController.clear();
+  //     postLoading = false;
+  //     notifyListeners();
+
+  //     if (response.statusCode == 201) {
+  //       log("Success : Posted Successfully");
+  //       getUsers();
+  //     }
+  //   } catch (e) {
+  //     postLoading = false;
+  //     notifyListeners();
+  //     log("Error : $e");
+  //   }
+  // }
+
+  Future<void> addUser(UserModel user) async {
+    final url = Uri.parse("https://65c33f3039055e7482c06b43.mockapi.io/users");
 
     try {
-      var response = await http.post(
+      final response = await http.post(
         url,
-        body: jsonEncode(userData.toJson()),
+        body: jsonEncode(user.toJson()),
         headers: {"content-type": "application/json"},
       );
 
-      postLoading = false;
-      notifyListeners();
-
       if (response.statusCode == 201) {
-        log("Success : Posted Successfully");
+        log("Success: User added successfully");
         getUsers();
       }
     } catch (e) {
-      postLoading = false;
-      notifyListeners();
-      log("Error : $e");
+      log("Error: $e");
     }
   }
 
@@ -64,5 +85,24 @@ class UserController extends ChangeNotifier {
       log("Errorr : $e");
       log("${users.length}");
     }
+  }
+
+  Future<void> deleteUser(String index) async {
+    Uri url =
+        Uri.parse("https://65c33f3039055e7482c06b43.mockapi.io/users/$index");
+
+    var response = await http.delete(url);
+
+    if (response.statusCode == 200) {
+      users.removeWhere((user) => user.id == index);
+      notifyListeners();
+      log("User Deleted .......");
+    }
+  }
+
+  void clearUsers() {
+    users.clear();
+    log(" Users length : ${users.length}");
+    notifyListeners();
   }
 }
