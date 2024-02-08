@@ -22,7 +22,7 @@ class HomeView extends StatelessWidget {
             margin: const EdgeInsets.all(22),
             child: Column(
               children: [
-                const SizedBox(height: 12),
+                const SizedBox(height: 55),
                 TextField(
                   controller: nameController,
                   decoration: const InputDecoration(

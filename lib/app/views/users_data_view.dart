@@ -1,4 +1,5 @@
 import 'package:api_crud_app/app/controllers/user_controller.dart';
+import 'package:api_crud_app/app/views/edituser_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,15 @@ class _UserDataViewState extends State<UserDataView> {
             itemBuilder: (context, index) {
               final user = userController.users[index];
               return ListTile(
+                onTap: () {
+                  userController.editEmailController.text = user.email!;
+                  userController.editPhoneNumberController.text =
+                      user.phoneNumber!;
+                  userController.editNameController.text = user.name!;
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => EditUserView(user: user),
+                  ));
+                },
                 leading: const CircleAvatar(),
                 title: Text(user.name ?? 'Unknown'),
                 subtitle: Text(user.email ?? 'Unknown'),
