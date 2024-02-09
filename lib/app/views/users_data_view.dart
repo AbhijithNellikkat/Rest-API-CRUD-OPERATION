@@ -23,7 +23,19 @@ class _UserDataViewState extends State<UserDataView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+      ),
       body: Consumer<UserController>(
         builder: (context, userController, _) {
           return ListView.builder(
@@ -40,14 +52,30 @@ class _UserDataViewState extends State<UserDataView> {
                     builder: (context) => EditUserView(user: user),
                   ));
                 },
-                leading: const CircleAvatar(),
-                title: Text(user.name ?? 'Unknown'),
-                subtitle: Text(user.email ?? 'Unknown'),
+                leading: const CircleAvatar(
+                  child: Icon(Icons.person),
+                ),
+                title: Text(
+                  user.name ?? 'Unknown',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  user.email ?? 'Unknown',
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
                 trailing: IconButton(
                   onPressed: () async {
                     await userController.deleteUser(user.id.toString());
                   },
-                  icon: const Icon(Icons.delete_outlined),
+                  icon: const Icon(
+                    Icons.remove_circle,
+                    color: Colors.red,
+                  ),
                 ),
               );
             },

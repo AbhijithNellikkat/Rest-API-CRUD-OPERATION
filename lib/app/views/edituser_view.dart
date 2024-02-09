@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:api_crud_app/app/controllers/user_controller.dart';
 import 'package:api_crud_app/app/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +13,19 @@ class EditUserView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Provider.of<UserController>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -27,36 +37,59 @@ class EditUserView extends StatelessWidget {
                 children: [
                   const SizedBox(height: 55),
                   TextField(
+                    style: const TextStyle(color: Colors.white),
                     controller: controller.editNameController,
                     decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      border: OutlineInputBorder(),
+                      labelText: 'Username',
+                      labelStyle: TextStyle(color: Colors.white),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
                     ),
                   ),
                   const SizedBox(height: 10),
                   TextField(
+                    style: const TextStyle(color: Colors.white),
                     controller: controller.editEmailController,
                     decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                      labelStyle: TextStyle(color: Colors.white),
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Colors.white,
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
                     ),
                   ),
                   const SizedBox(height: 10),
                   TextField(
-                    controller: controller.editPhoneNumberController,
+                    maxLength: 10,
+                    style: const TextStyle(color: Colors.white),
                     keyboardType: TextInputType.phone,
+                    controller: controller.editPhoneNumberController,
                     decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.phone),
-                      border: OutlineInputBorder(),
+                      labelText: 'Phone number',
+                      labelStyle: TextStyle(color: Colors.white),
+                      prefixIcon: Icon(
+                        Icons.phone,
+                        color: Colors.white,
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 19),
                   ElevatedButton(
                     onPressed: () async {
-                      log("kjhgkjhgk");
                       await controller.updateUser(user.id!, user);
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop();
                     },
-                    child: const Text("Update User"),
+                    child: const Text(" Update "),
                   ),
                 ],
               ),
