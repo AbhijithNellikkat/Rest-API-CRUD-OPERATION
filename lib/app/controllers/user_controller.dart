@@ -40,6 +40,8 @@ class UserController extends ChangeNotifier {
   Future<void> getUsers() async {
     Uri url = Uri.parse("https://65c33f3039055e7482c06b43.mockapi.io/users");
 
+    postLoading = true;
+
     try {
       var response = await http.get(url);
       log("status code : ${response.statusCode}");
@@ -49,6 +51,7 @@ class UserController extends ChangeNotifier {
             .map((item) => UserModel.fromJson(item))
             .toList();
 
+        users.clear();
         users.addAll(data);
         log("${users.length}");
         notifyListeners();
@@ -56,8 +59,32 @@ class UserController extends ChangeNotifier {
     } catch (e) {
       log("Errorr : $e");
       log("${users.length}");
+    } finally {
+      postLoading = false;
     }
   }
+
+  // Future<void> getUsers() async {
+  //   Uri url = Uri.parse("https://65c33f3039055e7482c06b43.mockapi.io/users");
+
+  //   try {
+  //     var response = await http.get(url);
+  //     log("status code : ${response.statusCode}");
+
+  //     if (response.statusCode == 200) {
+  //       List<UserModel> data = (jsonDecode(response.body) as List)
+  //           .map((item) => UserModel.fromJson(item))
+  //           .toList();
+
+  //       users.addAll(data);
+  //       log("${users.length}");
+  //       notifyListeners();
+  //     }
+  //   } catch (e) {
+  //     log("Errorr : $e");
+  //     log("${users.length}");
+  //   }
+  // }
 
   Future<void> deleteUser(String index) async {
     Uri url =
