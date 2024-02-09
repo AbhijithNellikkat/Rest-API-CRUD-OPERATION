@@ -5,6 +5,7 @@ import 'package:api_crud_app/app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class EditUserView extends StatelessWidget {
   EditUserView({super.key, required this.user});
 
@@ -53,7 +54,7 @@ class EditUserView extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       log("kjhgkjhgk");
-                      await controller.updateUser(user);
+                      await controller.updateUser(user.id!, user);
                     },
                     child: const Text("Update User"),
                   ),

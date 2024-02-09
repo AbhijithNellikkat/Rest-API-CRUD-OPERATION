@@ -72,26 +72,31 @@ class UserController extends ChangeNotifier {
     }
   }
 
-  Future<void> updateUser(UserModel user) async {
-    Uri url = Uri.parse("https://65c33f3039055e7482c06b43.mockapi.io/users/${user.id}");
+  Future<void> updateUser(String userId, UserModel user) async {
+    Uri url =
+        Uri.parse("https://65c33f3039055e7482c06b43.mockapi.io/users/$userId");
 
-    final data = UserModel(
-      id: user.id,
+    final updatedData = UserModel(
+      id: userId,
       email: editEmailController.text,
       phoneNumber: editPhoneNumberController.text,
       name: editNameController.text,
     );
 
     try {
-      var response = await http.put(url,
-          body: jsonEncode(
-            data.toJson(),
-          ),
-          headers: {"content-type": "application/json"});
+      var response = await http.put(
+        url,
+        body: jsonEncode(updatedData.toJson()),
+        headers: {"content-type": "application/json"},
+      );
 
       if (response.statusCode == 200) {
-        await getUsers();
-        log("Users data updated.....");
+        final index = users.indexWhere((u) => u.id == userId);
+        if (index != -1) {
+          users[index] = updatedData;
+          notifyListeners();
+          log("User data updated.....");
+        }
       }
     } catch (e) {
       log("$e");
